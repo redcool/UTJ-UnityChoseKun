@@ -1,12 +1,32 @@
 ﻿
+namespace Utj.UnityChoseKun.Engine
+{
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using Rendering.Universal;
 
+#if UNITY_EDITOR
+    using UnityEditor;
 
-namespace Utj.UnityChoseKun.Engine
-{
-    using Rendering.Universal;
+    [CustomEditor(typeof(UnityChoseKunPlayer))]
+    public class UnityChoseKunPlayerEditor : Editor
+    {
+        const string OPEN_PLAYER_HIERARCHY = "Window/UTJ/UnityChoseKun/Player Hierarchy";
+
+        GUIContent GUI_OPEN_PLAYER_HIERARCHY = new GUIContent("Open Player Hierarchy", $"Open {OPEN_PLAYER_HIERARCHY}");
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            if(GUILayout.Button(GUI_OPEN_PLAYER_HIERARCHY))
+            {
+                EditorApplication.ExecuteMenuItem(OPEN_PLAYER_HIERARCHY);
+            }
+        }
+    }
+#endif
+
 
     /// <summary>
     /// UnityChoseKunのPlayer側Class
@@ -56,6 +76,8 @@ namespace Utj.UnityChoseKun.Engine
 
         static UnityChoseKunPlayer m_Instance;
 
+        [Header("Only run in Development Build")]
+        public bool isDebugBuildOnly = true;
 
         private void Awake()
         {
@@ -72,6 +94,13 @@ namespace Utj.UnityChoseKun.Engine
 
         private void Start()
         {
+            if (isDebugBuildOnly && !Debug.isDebugBuild)
+            {
+                m_Instance = null;
+                DestroyImmediate(gameObject);
+                return;
+            }
+
             if(m_Instance != null)
             {
                 DestroyImmediate(gameObject);

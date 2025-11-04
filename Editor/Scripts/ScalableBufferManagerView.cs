@@ -62,7 +62,7 @@ namespace Utj.UnityChoseKun
                 EditorGUILayout.HelpBox("Please Pull Request.", MessageType.Info);
             }
 
-            EditorGUILayout.HelpBox("この機能を利用する為にはCameraのAllow　Dynamic Resolutionもしくは、RenderTextureのDynamic Scalingをtrueにする必要があります。", MessageType.Info);
+            EditorGUILayout.HelpBox("To use this feature, you must set either the Camera's Allow Dynamic Resolution or the RenderTexture's Dynamic Scaling to true.", MessageType.Info);
 
             EditorGUI.BeginChangeCheck();
             scalableBufferManagerKun.widthScaleFactor = EditorGUILayout.Slider("widthScale", scalableBufferManagerKun.widthScaleFactor, 0.01f, 10.0f);
